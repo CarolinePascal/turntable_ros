@@ -20,8 +20,6 @@
 
 #include <string>
 
-enum ControlModes { None, Position, Rotation };
-
 /*! \class Turntable
 * \brief Turntable class
 */
@@ -34,13 +32,13 @@ class Turntable
         *  \param turntablePAD Turntable GPIB primary address - default = 10.
         *  \param propellerServerName The prefix of the turntable ROS service server.
         */
-        Turntable(int turntablePAD, std::string TurntablePrefix = "turntable");
+        Turntable(int turntablePAD, std::string TurntablePrefix = "turntable_");
 
         /*!
         *  \brief Constructor with bus scanningto fing GPIB primary address.
         *  \param propellerServerName The prefix of the turntable ROS service server.
         */
-        Turntable(std::string TurntablePrefix = "turntable");
+        Turntable(std::string TurntablePrefix = "turntable_");
     
         /*!
         *  \brief Destructor.
@@ -127,7 +125,5 @@ class Turntable
     bool m_max360;  /*! Turtable 360° limitation */
 
     int m_turntableID;  /*! Turntable ID */
-
-    enum ControlModes m_controlMode;    /*!< Turntable control mode */ 
 };
 

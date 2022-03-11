@@ -2,10 +2,6 @@
 
 ROS package dedicated to the control of the type 9640 Bruel & Kjaer turntable, using the GPIB IEEE 488.2 interface of the type 5997 controller and an ADLINK USB-3488A USB/GPIB adaptator.
 
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
 ## Description
 
 This package contains a single node `turntable_node` which launches the following ROS services :

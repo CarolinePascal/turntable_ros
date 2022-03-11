@@ -7,9 +7,9 @@ Turntable::Turntable(int turntablePAD, std::string turntablePrefix)
 {
     m_turntablePrefix = turntablePrefix;
     m_turntableID = ibdev(BOARD_DESC, turntablePAD, TURNTABLE_SAD, T3s, 1, 0);
-    if(ibsta & ERR)
+    if(m_turntableID == -1)
     {
-        throw std::runtime_error("CANNOT OPEN TURNTABLE GPIB BUS");
+        throw std::runtime_error("CANNOT FIND TURNTABLE");
     }
     ROS_INFO("Turntable ID : %d", m_turntableID);
 
@@ -28,7 +28,6 @@ Turntable::Turntable(int turntablePAD, std::string turntablePrefix)
     if(ibsta & ERR)
     {
         throw std::runtime_error("CANNOT SEND INITIALISATION COMMAND TO TURNTABLE");
-
     }
 
     m_turntableAcceleration = 1;
@@ -53,7 +52,19 @@ int Turntable::findPAD()
     }
     AllAddresses[MAX_PAD-1] = NOADDR;
 
-    FindLstn(ibfind("gpib0"), AllAddresses, ListenAddresses, MAX_PAD);
+    int boardID = ibfind("gpib0");
+
+    if(boardID == -1)
+    {
+        throw std::runtime_error("CANNOT FIND ADLINK ADAPTATOR");
+    }
+
+    ibrsc(boardID,1);
+    ibpad(boardID,0);
+    ibeot(boardID,1);
+    SendIFC(boardID);
+
+    FindLstn(boardID, AllAddresses, ListenAddresses, MAX_PAD);
 
     if(ibcntl < 1)
     {

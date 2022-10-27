@@ -137,6 +137,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/turntable_ros_node.cpp)
 add_executable(turntable_node src/turntable_node.cpp src/Turntable.cpp)
+add_dependencies(turntable_node ${PROJECT_NAME}_generate_messages_cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

@@ -8,11 +8,11 @@
 
 #define TURNTABLE_PAD 10
 #define TURNTABLE_SAD 0
-#define BOARD_DESC 10
+#define BOARD_DESC 0
 #define MAX_PAD 31
 
 #include <ros/ros.h>
-#include <std_srvs/Empty.h>
+#include <std_srvs/Trigger.h>
 #include <std_srvs/SetBool.h>
 
 #include "turntable_ros/Float.h"
@@ -53,7 +53,7 @@ class Turntable
 
         /*!
         *   \brief Get turntable acceleration.
-        *   \return Turntable acceleration, ranging from 1 to 6.
+        *   \return Turntable acceleration, ranging from 1 to 10.
         */
         int getAcceleration();
 
@@ -73,7 +73,7 @@ class Turntable
 
         /*!
          *  \brief Set turntable acceleration
-         *  \param acceleration Turntable acceleration, ranging from 1 to 6
+         *  \param acceleration Turntable acceleration, ranging from 1 to 10
          */
         bool setAcceleration(turntable_ros::Int::Request &req, turntable_ros::Int::Response &res);
 
@@ -97,7 +97,7 @@ class Turntable
         /*!
          *  \brief Set turntable 0° reference
          */
-        bool set0reference(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
+        bool set0reference(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
 
         /*!
          *  \brief Start turntable rotation
@@ -107,7 +107,7 @@ class Turntable
         /*!
          *  \brief Stop turntable rotation
          */
-        bool stopRotation(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
+        bool stopRotation(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
 
     ros::NodeHandle m_nodeHandle; /*!< ROS node handle */
     ros::ServiceServer m_turntableAccServer; /*!< Turntable acceleration ROS service server */

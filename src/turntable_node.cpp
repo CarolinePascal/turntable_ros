@@ -12,7 +12,7 @@ int main( int argc, char **argv)
 	int turntablePAD = TURNTABLE_PAD;
 	nh.getParam("turntable_GPIB_PAD", turntablePAD);
 	
-	Turntable turntable;
+	Turntable turntable(turntablePAD);
 
 	ros::spin();
 	return(0);

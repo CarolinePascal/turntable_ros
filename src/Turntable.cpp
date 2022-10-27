@@ -7,7 +7,7 @@ Turntable::Turntable(int turntablePAD, std::string turntablePrefix)
 {
     m_turntablePrefix = turntablePrefix;
     m_turntableID = ibdev(BOARD_DESC, turntablePAD, TURNTABLE_SAD, T3s, 1, 0);
-    if(m_turntableID == -1)
+    if(ibsta & ERR)
     {
         throw std::runtime_error("CANNOT FIND TURNTABLE");
     }
@@ -107,11 +107,13 @@ bool Turntable::setAcceleration(turntable_ros::Int::Request &req, turntable_ros:
     if(ibsta & ERR)
     {
         ROS_ERROR("CANNOT SEND COMMAND TO TURNTABLE");
+        res.success = false;
         return(false);
     }
     else
     {
         m_turntableAcceleration = req.value;
+        res.success = true;
         return(true);
     }  
 }
@@ -122,15 +124,18 @@ bool Turntable::setAbsPosition(turntable_ros::Int::Request &req, turntable_ros::
     std::string cmd = std::string("turn_abs ") + position;
 
     ibwrt(m_turntableID,cmd.c_str(),cmd.length());
+    ibwrt(m_turntableID,"start",5);
 
     if(ibsta & ERR)
     {
         ROS_ERROR("CANNOT SEND COMMAND TO TURNTABLE");
+        res.success = false;
         return(false);
     }
     else
     {
         m_turntablePosition = req.value;
+        res.success = true;
         return(true);
     }
 }
@@ -141,15 +146,18 @@ bool Turntable::setRelPosition(turntable_ros::Int::Request &req, turntable_ros::
     std::string cmd = std::string("turn_rel ") + position;
 
     ibwrt(m_turntableID,cmd.c_str(),cmd.length());
+    ibwrt(m_turntableID,"start",5);
 
     if(ibsta & ERR)
     {
         ROS_ERROR("CANNOT SEND COMMAND TO TURNTABLE");
+        res.success = false;
         return(false);
     }
     else
     {
         m_turntablePosition += req.value;
+        res.success = true;
         return(true);
     }
 }
@@ -158,6 +166,7 @@ bool Turntable::setMax360(std_srvs::SetBool::Request &req, std_srvs::SetBool::Re
 {
     if(req.data == m_max360)
     {
+        res.success = true;
         return(true);
     }
     else
@@ -177,21 +186,30 @@ bool Turntable::setMax360(std_srvs::SetBool::Request &req, std_srvs::SetBool::Re
             return(false);
         }
 
-        return(true);
+        else
+        {
+            m_max360 = req.data;
+            res.success = true;
+            return(true);
+        }  
     }
 }
 
-bool Turntable::set0reference(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
+bool Turntable::set0reference(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res)
 {
     ibwrt(m_turntableID,"set 0 deg",9);
 
     if(ibsta & ERR)
     {
         ROS_ERROR("CANNOT SEND COMMAND TO TURNTABLE");
+        res.success = false;
         return(false);
     }
-
-    return(true);
+    else
+    {
+        res.success = true;
+        return(true);
+    }
 }
 
 bool Turntable::startRotation(turntable_ros::Float::Request &req, turntable_ros::Float::Response &res)
@@ -200,33 +218,35 @@ bool Turntable::startRotation(turntable_ros::Float::Request &req, turntable_ros:
     std::string cmd = std::string("cont. ") + invertedSpeed;
 
     ibwrt(m_turntableID,cmd.c_str(),cmd.length());
-
-    if(ibsta & ERR)
-    {
-        ROS_ERROR("CANNOT SEND COMMAND TO TURNTABLE");
-        return(false);
-    }
-
     ibwrt(m_turntableID,"start",5);
 
     if(ibsta & ERR)
     {
         ROS_ERROR("CANNOT SEND COMMAND TO TURNTABLE");
+        res.success = false;
         return(false);
     }
 
-    return(true);
+    else
+    {
+        res.success = true;
+        return(true);
+    }
 }
 
-bool Turntable::stopRotation(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
+bool Turntable::stopRotation(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res)
 {
     ibwrt(m_turntableID,"stop",4);
 
     if(ibsta & ERR)
     {
         ROS_ERROR("CANNOT SEND COMMAND TO TURNTABLE");
+        res.success = false;
         return(false);
     }
-
-    return(true);
+    else
+    {
+        res.success = true;
+        return(true);
+    }
 }

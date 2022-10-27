@@ -6,15 +6,15 @@ ROS package dedicated to the control of the type 9640 Bruel & Kjaer turntable, u
 
 This package contains a single node `turntable_node` which launches the following ROS services :
 
-- `turntable_set_acceleration` : Sets the acceleration of the turntable, ranging from 1 to 6 (arbitrary unit) (turntable_ros::Int);
+- `turntable_set_acceleration` : Sets the acceleration of the turntable, ranging from 1 to 10 (arbitrary unit) (turntable_ros::Int);
 - `turntable_max360` : Sets the spinning limitation of the turntable, to avoid eventual cable knots (std_srvs::SetBool);
-- `turntable_set_0_ref` : Sets 0° reference of the turntable to its current position (std_srvs::Empty);
+- `turntable_set_0_ref` : Sets 0° reference of the turntable to its current position (std_srvs::Trigger);
 
 - `turntable_set_abs_position` : Sends an absolute position command to the turntable (turntable_ros::Int);
 - `turntable_set_rel_position` : Sends a relative position command to the turntable (turntable_ros::Int);
 
 - `turntable_start_rotation` : Starts a rotation motion at a given rotation speed (in turns per second) (turntable_ros::Float);
-- `turntable_stop_rotation` : Stops the rotation motion (std_srvs::Empty);
+- `turntable_stop_rotation` : Stops the rotation motion (std_srvs::Trigger);
 
 These 7 ROS services implement all functionnalities offered by the Bruel & Kjaer turntable. 
 

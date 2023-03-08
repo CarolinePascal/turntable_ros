@@ -1,0 +1,71 @@
+This file describes the installation and configuration for USB-348A Linux Driver
+
+
+STEP 1: UNPACK
+==============
+
+Decompress the usbgpib_src_v203.tgz :
+     tar xvzf usbgpib_src_v203.tgz
+
+This will extract the 'usbgpib' directory with the following 
+subdirectories:
+----------------------------------------------------------------------
+drivers/ contains the device modules, configuration file and
+         installation script
+drvsrc/  contains the source of adgpib kernel driver
+lib/	 contains the shared library and source of lib - libadgpib32.so/libadgpib64.so 
+samples/ contains some sample programs
+
+B: COMPILE
+==============
+
+a) compiling drivers
+---------------------------
+1. cd to usbgpib/drvsrc directory
+2. Type "make". 
+
+If the driver is built successfully, the driver “usbgpibfl.ko”, “usbgpibflad.ko” and "u348a.ko" are located in usbgpib/driver/’kernel_verion’.
+If the kernel version is 4.4.0-21-generic, the driver is located in usbgpib/driver/4.4.0-21-generic.
+
+3. For the system automatically loads the driver during boot time,
+run the following command to install the driver:
+
+#make install
+
+The system will automatically load the driver during boot time.
+
+b) compiling software library
+------------------------------
+1. cd to usbgpib/lib directory
+2. Type "make". 
+ 
+C: CONFIGURE AND LOAD DEVICE
+===================================
+1. Modify gpib interface configuration file, usbgpib/drivers/adgpib.cfg   
+2. Loading driver and library 
+for i686
+   usbgpib/drivers/adgpib_inst.pl   for driver loading
+for x86_64
+   usbgpib/drivers/adgpib_inst64.pl   for driver loading
+
+After initial driver installation, the driver is loaded.
+
+3. Using the lsmod command to verify the driver is loaded:
+
+#lsmod | grep u348a
+
+output is shown is like the following
+u348a 57407 0
+
+D: INSTALL LIBRARY
+=======================
+
+The library is provided as a ELF shared library. 
+To install the library, type the following command:
+for i686
+   cp <InstallDir>/usbgpib/lib/libadgpib32.so /usr/lib
+for x86_64
+   cp <InstallDir>/usbgpib/lib/libadgpib64.so /usr/lib
+
+In addition, adgpib_inst.pl/adgpib_inst64.pl also involves the installation for the library.
+

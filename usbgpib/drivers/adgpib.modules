@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ ! -c /dev/u348a0 ] ; then
+	exec /sbin/modprobe u348a >/dev/null 2>&1
+	exec /sbin/modprobe usbgpibfl >/dev/null 2>&1
+	exec /sbin/modprobe usbgpibflad >/dev/null 2>&1
+fi
+

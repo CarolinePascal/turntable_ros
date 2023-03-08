@@ -1,0 +1,28 @@
+CC=gcc
+CFLAGS=-O2 -Wall -Wstrict-prototypes -I../include -fPIC
+
+all: libadgpib64.so
+
+.c.o:	$.c
+	gcc $(CFLAGS) -c $<
+
+libadgpib64.so: ibCac.o ibClr.o ibCmd.o ibEos.o ibEot.o \
+	ibFind.o ibLines.o ibOnl.o ibPad.o ibRd.o ibRpp.o ibRsp.o ibRsv.o \
+	ibSad.o ibSic.o ibSre.o ibTmo.o ibTrg.o ibWait.o ibWrt.o \
+	ibGts.o ibBoard.o ibutil.o globals.o ibask.o ibppc.o \
+	ibLoc.o ibDma.o ibdev.o ibbna.o async.o ibconfig.o ibFindLstn.o \
+	local_lockout.o self_test.o pass_control.o ibstop.o ibnotify.o sem_c.o -lpthread
+	
+	gcc -shared -lm -o libadgpib64.so \
+	ibCac.o ibClr.o ibCmd.o ibEos.o ibEot.o \
+	ibFind.o ibLines.o ibOnl.o ibPad.o ibRd.o ibRpp.o ibRsp.o ibRsv.o \
+	ibSad.o ibSic.o ibSre.o ibTmo.o ibTrg.o ibWait.o ibWrt.o \
+	ibGts.o ibBoard.o ibutil.o globals.o ibask.o ibppc.o \
+	ibLoc.o ibDma.o ibdev.o ibbna.o async.o ibconfig.o ibFindLstn.o \
+	local_lockout.o self_test.o pass_control.o ibstop.o ibnotify.o sem_c.o -lpthread
+
+install:
+	cp -f libadgpib64.so /usr/lib
+
+clean:
+	rm -f *.o libadgpib64.so *~

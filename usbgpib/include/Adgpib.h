@@ -25,6 +25,7 @@ extern "C" {
 #endif
 
 #include "gpib_const.h"
+#include <stddef.h>
 
 typedef unsigned short Addr4882_t;
 static const Addr4882_t NOADDR = -1;

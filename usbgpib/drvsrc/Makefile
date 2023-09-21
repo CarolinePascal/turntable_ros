@@ -5,3 +5,6 @@ all:
 
 clean:
 	for i in $(SUBDIRS); do cd "$$i"; $(MAKE) clean; cd ..; done
+
+install:
+	for i in $(SUBDIRS); do cd "$$i"; $(MAKE) install; cd ..; done

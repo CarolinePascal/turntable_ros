@@ -14,6 +14,9 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 FIND_LIBRARY(GPIB_LIBRARY adgpib64 /usr/lib/)
+if(NOT GPIB_LIBRARY)
+  message(FATAL_ERROR "GPIB library not found")
+endif()
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

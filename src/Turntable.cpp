@@ -5,6 +5,9 @@
 
 Turntable::Turntable(int turntablePAD, std::string turntablePrefix)
 {
+    m_boardID = ibfind("gpib0");
+    ROS_INFO("Board ID : %d", m_boardID);
+
     m_turntablePrefix = turntablePrefix;
     m_turntableID = ibdev(BOARD_DESC, turntablePAD, TURNTABLE_SAD, T3s, 1, 0);
     if(ibsta & ERR)
@@ -82,6 +85,20 @@ int Turntable::findPAD()
     return(turntablePAD);
 }
 
+bool Turntable::getStatus()
+{
+    short l;
+
+    if(iblines(m_boardID,&l) & ERR )
+    {
+        return false;
+    }
+
+    bool status = (int)(l>>13)&0x1;
+    // ROS_WARN("Status : %d", status);
+    return status;
+}
+
 int Turntable::getPosition()
 {
     return(m_turntablePosition);
@@ -134,6 +151,12 @@ bool Turntable::setAbsPosition(turntable_ros::Int::Request &req, turntable_ros::
     }
     else
     {
+        while(!getStatus())
+        {
+            ros::WallDuration(0.1).sleep();
+            continue;
+        }
+
         m_turntablePosition = req.value;
         res.success = true;
         return(true);
@@ -156,6 +179,12 @@ bool Turntable::setRelPosition(turntable_ros::Int::Request &req, turntable_ros::
     }
     else
     {
+        while(!getStatus())
+        {
+            ros::WallDuration(0.1).sleep();
+            continue;
+        }
+
         m_turntablePosition += req.value;
         res.success = true;
         return(true);

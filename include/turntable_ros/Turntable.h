@@ -44,6 +44,12 @@ class Turntable
         *  \brief Destructor.
         */
         ~Turntable();
+
+        /*!
+         *  \brief Returns turntable status.
+         *  \return Turntable status : true if ready, false otherwise.
+         */
+        bool getStatus();
     
         /*!
         *   \brief Get turntable position.
@@ -69,7 +75,7 @@ class Turntable
          *  \brief Find GPIB primary address
          *  \return Primary GPIB address
          */
-        static int findPAD();
+        int findPAD();
 
         /*!
          *  \brief Set turntable acceleration
@@ -125,5 +131,6 @@ class Turntable
     bool m_max360;  /*! Turtable 360° limitation */
 
     int m_turntableID;  /*! Turntable ID */
+    int m_boardID;  /*! Board ID (adaptator) */
 };
 
